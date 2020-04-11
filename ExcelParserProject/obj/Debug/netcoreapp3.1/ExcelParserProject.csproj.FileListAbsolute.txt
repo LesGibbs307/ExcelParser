@@ -1,0 +1,8 @@
+C:\Users\John\source\repos\ParsingExcelData\ExcelParserProject\bin\Debug\netcoreapp3.1\ExcelParserProject.deps.json
+C:\Users\John\source\repos\ParsingExcelData\ExcelParserProject\bin\Debug\netcoreapp3.1\ExcelParserProject.dll
+C:\Users\John\source\repos\ParsingExcelData\ExcelParserProject\bin\Debug\netcoreapp3.1\ExcelParserProject.pdb
+C:\Users\John\source\repos\ParsingExcelData\ExcelParserProject\obj\Debug\netcoreapp3.1\ExcelParserProject.csprojAssemblyReference.cache
+C:\Users\John\source\repos\ParsingExcelData\ExcelParserProject\obj\Debug\netcoreapp3.1\ExcelParserProject.AssemblyInfoInputs.cache
+C:\Users\John\source\repos\ParsingExcelData\ExcelParserProject\obj\Debug\netcoreapp3.1\ExcelParserProject.AssemblyInfo.cs
+C:\Users\John\source\repos\ParsingExcelData\ExcelParserProject\obj\Debug\netcoreapp3.1\ExcelParserProject.dll
+C:\Users\John\source\repos\ParsingExcelData\ExcelParserProject\obj\Debug\netcoreapp3.1\ExcelParserProject.pdb
