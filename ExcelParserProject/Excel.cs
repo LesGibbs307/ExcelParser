@@ -1,26 +1,44 @@
 ﻿using System;
-using ExcelParserProject;
 using System.IO;
-using Microsoft.Extensions.FileProviders;
-using System.Text.RegularExpressions;
 using ExcelDataReader;
 using System.Text;
 using System.Data;
 using System.Collections.Generic;
 using System.Collections;
 
+
 namespace ExcelParserProject
 {
     public class Excel: BaseFile
     {
-        private List<IEnumerable> sheets;        
+        private List<IEnumerable> worksheet;
+        private int sheets;
         public Excel(string fileName, string filePath)
         {
             FileName = fileName;
             FilePath = filePath;
             ReadFile(FileName, FilePath);
         }
-                     
+
+        private void IterateWorkBook(dynamic values)
+        {
+            
+            foreach (DataTable table in values) { 
+                foreach (DataRow row in table.Rows) { 
+                    foreach (DataColumn column in table.Columns) { 
+                        if (row[column] != null) {
+                            //var obj = new IEnumerable
+                            //{
+                            //    row[column]
+                            //};
+                            //Transactions.Add(row[column]);
+                            Console.WriteLine(row[column]);
+                        }
+                    }
+                }
+            }
+        }
+
         private void ReadFile(string fileName, string filePath)
         {
             try 
@@ -39,15 +57,14 @@ namespace ExcelParserProject
                         do
                         {
                             while (reader.Read())
-                            {                                
+                            {      
                             }
                         } while (reader.NextResult());
-                        var conf = new ExcelReaderConfiguration { Password = "yourPassword" };
+                        var conf = new ExcelReaderConfiguration { Password = "JohnGibson" };
                         var excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream, conf);
-                        // 2. Use the AsDataSet extension method
                         var result = reader.AsDataSet();
-
-                        // The result of each spreadsheet is in result.Tables
+                        var workbook = result.Tables;
+                        IterateWorkBook(workbook);
                     }
                 }
             } catch(Exception ex)
@@ -55,21 +72,5 @@ namespace ExcelParserProject
                 Console.WriteLine(ex);
             }
         }
-
-        //public void ReadFile()
-        //{
-        //    workBook = excel.Workbooks.Open(FileName);
-        //    //workSheet = workbook.
-        //    // define workbook
-        //    //check how many number of sheets in 
-        //    // Get header names
-        //    // get a collection of data
-
-        //    //workSheet = workBook.WorkSheets[]
-        //    // throw new NotImplementedException();
-        //}
-
-
-
     }
 }

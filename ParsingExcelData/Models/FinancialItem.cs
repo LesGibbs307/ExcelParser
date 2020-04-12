@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ParsingExcelData
 {
-    public class Transaction<T>
+    public class FinancialItem<T>
     {
         [JsonProperty("Name")]
         public string Name { get; set; }
