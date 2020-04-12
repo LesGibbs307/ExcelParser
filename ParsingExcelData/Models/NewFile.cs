@@ -8,44 +8,58 @@ namespace ParsingExcelData.Models
 {
     public class NewFile
     {
+        public string fileName;
+        public string filePath;
         public static IFormFile File { get; set; }
-        static string FileName { get; set; }
-        
-        //public static CSV Csv;
+        public BaseFile BaseFile { get; set; }
+        public string FileName
+        {
+            get { return fileName; }
+            set { fileName = value; }
+        }
 
+        public string FilePath
+        {
+            get { return filePath; }
+            set { filePath = value; }
+        }
 
         public NewFile(IFormFile file)
         {
             File = file;
+            FileName = Path.GetFileName(File.FileName);
+            FilePath = SetFilePath();
+            CreateFileInDirectory();
+            CheckFileType();
         }
 
-        private void CheckFileType(string fileName, string filePath, Stream fileStream)
+        private void CheckFileType()
         {
             Regex reg = new Regex(@"([^\.]+$)");
             Match match = reg.Match(fileName);
             if (match.ToString() == "xlsx")
             {
-                Excel.ReadFile(fileName, filePath, fileStream);
+                BaseFile = new Excel(fileName, filePath);
+
+            } else
+            {
+                BaseFile = new CSV();
             }
-            //else { 
-            //    Csv.ReadFile(); 
-            //}
             
         }
 
-        public async void CreateFileInDirectory()
+        private string SetFilePath()
+        {            
+            return Path.Combine(Directory.GetCurrentDirectory(), @"www", fileName);
+        }
+        private async void CreateFileInDirectory()
         {
             try
             {
-                //check if file exist
-                var fileName = Path.GetFileName(File.FileName);
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), @"www", fileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
                     await File.CopyToAsync(fileStream);
-                    CheckFileType(fileName, filePath, fileStream);
                 }
-                
             }
             catch (Exception ex)
             {

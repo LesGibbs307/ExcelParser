@@ -4,44 +4,56 @@ using System.IO;
 using Microsoft.Extensions.FileProviders;
 using System.Text.RegularExpressions;
 using ExcelDataReader;
+using System.Text;
+using System.Data;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace ExcelParserProject
 {
-    public static class Excel// : IParseable
+    public class Excel: BaseFile
     {
-        
-        private static string FilePath;
-        private static int sheets;
-
-
-        public static void ReadFile(string fileName, string filePath, dynamic stream)
+        private List<IEnumerable> sheets;        
+        public Excel(string fileName, string filePath)
         {
-            var reader = ExcelReaderFactory.CreateReader(stream, new ExcelReaderConfiguration()
+            FileName = fileName;
+            FilePath = filePath;
+            ReadFile(FileName, FilePath);
+        }
+                     
+        private void ReadFile(string fileName, string filePath)
+        {
+            try 
+            { 
+                Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+                using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
+                {
+                    // Auto-detect format, supports:
+                    //  - Binary Excel files (2.0-2003 format; *.xls)
+                    //  - OpenXml Excel files (2007 format; *.xlsx)
+                    using (var reader = ExcelReaderFactory.CreateReader(stream))
+                    {
+                        // Choose one of either 1 or 2:
+
+                        // 1. Use the reader methods
+                        do
+                        {
+                            while (reader.Read())
+                            {                                
+                            }
+                        } while (reader.NextResult());
+                        var conf = new ExcelReaderConfiguration { Password = "yourPassword" };
+                        var excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream, conf);
+                        // 2. Use the AsDataSet extension method
+                        var result = reader.AsDataSet();
+
+                        // The result of each spreadsheet is in result.Tables
+                    }
+                }
+            } catch(Exception ex)
             {
-                // Gets or sets the encoding to use when the input XLS lacks a CodePage
-                // record, or when the input CSV lacks a BOM and does not parse as UTF8. 
-                // Default: cp1252 (XLS BIFF2-5 and CSV only)
-               //FallbackEncoding = Encoding.GetEncoding(1252),
-
-                // Gets or sets the password used to open password protected workbooks.
-                Password = "password",
-
-                // Gets or sets an array of CSV separator candidates. The reader 
-                // autodetects which best fits the input data. Default: , ; TAB | # 
-                // (CSV only)
-                AutodetectSeparators = new char[] { ',', ';', '\t', '|', '#' },
-
-                // Gets or sets a value indicating whether to leave the stream open after
-                // the IExcelDataReader object is disposed. Default: false
-                LeaveOpen = false,
-
-                // Gets or sets a value indicating the number of rows to analyze for
-                // encoding, separator and field count in a CSV. When set, this option
-                // causes the IExcelDataReader.RowCount property to throw an exception.
-                // Default: 0 - analyzes the entire file (CSV only, has no effect on other
-                // formats)
-                AnalyzeInitialCsvRows = 0,
-            });
+                Console.WriteLine(ex);
+            }
         }
 
         //public void ReadFile()
@@ -58,9 +70,6 @@ namespace ExcelParserProject
         //}
 
 
-        public static void ToParseData()
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

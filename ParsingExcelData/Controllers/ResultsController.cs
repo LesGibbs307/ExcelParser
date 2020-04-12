@@ -16,7 +16,6 @@ namespace ParsingExcelData.Controllers
         {
             try {
                 NewFile newFile = new NewFile(file);
-                newFile.CreateFileInDirectory();
             }catch(Exception ex)
             {
                 Console.WriteLine(ex);

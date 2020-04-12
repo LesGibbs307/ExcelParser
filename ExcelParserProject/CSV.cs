@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ExcelParserProject
 {
-    public class CSV : IParseable
+    public class CSV : BaseFile, IParseable
     {        
         public void ReadFile()
         {
