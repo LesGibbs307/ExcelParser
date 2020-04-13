@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ParsingExcelData
 {
-    public class FinancialItem<T>
+    public class FinancialItem
     {
         [JsonProperty("Name")]
         public string Name { get; set; }
@@ -24,7 +24,20 @@ namespace ParsingExcelData
         public decimal Amount { get; set; }
 
         [JsonProperty("AmountOwed")]
-        public T AmountOwed { get; set; }
+        public dynamic AmountOwed { get; set; }
 
+
+        public FinancialItem()
+        {
+
+        }
+        public dynamic ConvertToJson(dynamic items)
+        {
+            foreach(var item in items)
+            {
+                var result = JsonConvert.SerializeObject(item.Headers);
+            }
+            return items;
+        }
     }
 }

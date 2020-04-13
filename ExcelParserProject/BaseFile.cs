@@ -6,8 +6,8 @@ namespace ExcelParserProject
 {
     public abstract class BaseFile
     {
-        public string FileName { get; set; }
-        public string FilePath { get; set; }
-        public List<object> Transactions { get; set; }
+        internal string FileName { get; set; }
+        internal string FilePath { get; set; }
+        public List<Worksheet> Worksheets = new List<Worksheet>();
     }
 }

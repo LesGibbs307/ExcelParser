@@ -5,14 +5,13 @@ using System.Text;
 using System.Data;
 using System.Collections.Generic;
 using System.Collections;
-
+using Microsoft.CSharp.RuntimeBinder;
 
 namespace ExcelParserProject
 {
     public class Excel: BaseFile
     {
-        private List<IEnumerable> worksheet;
-        private int sheets;
+        public Worksheet worksheet = new Worksheet();
         public Excel(string fileName, string filePath)
         {
             FileName = fileName;
@@ -20,22 +19,49 @@ namespace ExcelParserProject
             ReadFile(FileName, FilePath);
         }
 
+        private void CreateWorkSheet(dynamic table, dynamic row)
+        {
+            try { 
+                if(worksheet.Headers == null)
+                {
+                    worksheet.Name = table.TableName;
+                    worksheet.Headers = row.ItemArray;
+                } else
+                {
+                    worksheet.Rows.Add(row.ItemArray);
+                }
+            } catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+        }
+
         private void IterateWorkBook(dynamic values)
         {
-            
-            foreach (DataTable table in values) { 
-                foreach (DataRow row in table.Rows) { 
-                    foreach (DataColumn column in table.Columns) { 
-                        if (row[column] != null) {
-                            //var obj = new IEnumerable
-                            //{
-                            //    row[column]
-                            //};
-                            //Transactions.Add(row[column]);
-                            Console.WriteLine(row[column]);
+            try
+            {                
+                foreach (DataTable table in values)
+                {
+                    foreach (DataRow row in table.Rows)
+                    {
+                        foreach (DataColumn column in table.Columns)
+                        {
+                            int rowLength = row.ItemArray.Length -1;
+                            if (row[column] != null)
+                            {                                
+                                if(column.Ordinal == rowLength)
+                                {
+                                    CreateWorkSheet(table, row);
+                                }
+                            }
                         }
                     }
+                    Worksheets.Add(worksheet);
                 }
+                
+            } catch(Exception ex)
+            {
+                Console.WriteLine(ex);
             }
         }
 
