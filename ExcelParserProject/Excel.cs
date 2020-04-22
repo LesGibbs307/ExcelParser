@@ -11,7 +11,7 @@ namespace ExcelParserProject
 {
     public class Excel: BaseFile
     {
-        public Worksheet worksheet = new Worksheet();
+        private Worksheet worksheet = new Worksheet();
         public Excel(string fileName, string filePath)
         {
             FileName = fileName;
@@ -21,14 +21,15 @@ namespace ExcelParserProject
 
         private void CreateWorkSheet(dynamic table, dynamic row)
         {
-            try { 
-                if(worksheet.Headers == null)
+            try {
+                var thisRow = row.ItemArray;
+                if (worksheet.Headers == null)
                 {
                     worksheet.Name = table.TableName;
-                    worksheet.Headers = row.ItemArray;
+                    worksheet.Headers = thisRow;
                 } else
                 {
-                    worksheet.Rows.Add(row.ItemArray);
+                    worksheet.Rows.Add(thisRow);
                 }
             } catch(Exception ex)
             {

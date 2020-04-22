@@ -1,7 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using ExcelParserProject;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace ParsingExcelData
@@ -27,17 +30,32 @@ namespace ParsingExcelData
         public dynamic AmountOwed { get; set; }
 
 
+
         public FinancialItem()
         {
 
         }
-        public dynamic ConvertToJson(dynamic items)
+        public string ConvertToJson<T>(T data)
         {
-            foreach(var item in items)
+            try
             {
-                var result = JsonConvert.SerializeObject(item.Headers);
+                var result = JsonConvert.SerializeObject(data);
+                var jobj = (JObject)JsonConvert.DeserializeObject(result);
+                bool isValid = JTokenExtension.CheckIfValid(jobj, this);
+                if (isValid)
+                {
+
+                }
+                else
+                {
+                    throw new Exception("Value is in value");
+                }
+                return result;
+            } catch(Exception ex)
+            {
+                Console.WriteLine(ex);
             }
-            return items;
+            return null;
         }
     }
 }

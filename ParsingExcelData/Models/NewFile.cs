@@ -45,7 +45,7 @@ namespace ParsingExcelData.Models
             {
                 BaseFile = new CSV();
             }
-            dynamic results = new FinancialItem().ConvertToJson(BaseFile.Worksheets);
+            dynamic results = new FinancialItem().ConvertToJson(BaseFile);
         }
 
         private string SetFilePath()
