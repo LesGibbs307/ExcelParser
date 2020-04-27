@@ -29,7 +29,8 @@ namespace ParsingExcelData
         [JsonProperty("AmountOwed")]
         public dynamic AmountOwed { get; set; }
 
-
+        [JsonProperty("TimeSpan")]
+        public DateTime TimeSpan { get; set; }
 
         public FinancialItem()
         {
@@ -44,11 +45,13 @@ namespace ParsingExcelData
                 bool isValid = JTokenExtension.CheckIfValid(jobj, this);
                 if (isValid)
                 {
-
+                    dynamic items = new List<FinancialItem>();
+                    items = JTokenExtension.Collection;
+                    items = JTokenExtension.GetDataList(jobj);
                 }
                 else
                 {
-                    throw new Exception("Value is in value");
+                    throw new Exception("Correct Headers aren't located in document");
                 }
                 return result;
             } catch(Exception ex)

@@ -3,6 +3,7 @@ using System.IO;
 using ExcelDataReader;
 using System.Text;
 using System.Data;
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections;
 using Microsoft.CSharp.RuntimeBinder;
@@ -21,15 +22,18 @@ namespace ExcelParserProject
 
         private void CreateWorkSheet(dynamic table, dynamic row)
         {
-            try {
-                var thisRow = row.ItemArray;
+            var thisRow = row.ItemArray;
+            try 
+            {
                 if (worksheet.Headers == null)
                 {
                     worksheet.Name = table.TableName;
                     worksheet.Headers = thisRow;
                 } else
                 {
-                    worksheet.Rows.Add(thisRow);
+                    var list = new List<dynamic>(thisRow);
+                    list.Add(table.TableName);
+                    worksheet.Rows.Add(list.ToArray());
                 }
             } catch(Exception ex)
             {
