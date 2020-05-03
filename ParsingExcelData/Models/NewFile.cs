@@ -3,6 +3,8 @@ using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using ExcelParserProject;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ParsingExcelData.Models
 {
@@ -10,8 +12,11 @@ namespace ParsingExcelData.Models
     {
         public string fileName;
         public string filePath;
+        public string data;
         public static IFormFile File { get; set; }
         public BaseFile BaseFile { get; set; }
+
+
         public string FileName
         {
             get { return fileName; }
@@ -33,7 +38,19 @@ namespace ParsingExcelData.Models
             CheckFileType();
         }
 
-        private void CheckFileType()
+        private JToken[] FormatFile(string baseFile)
+        {
+            var file = (JObject)JsonConvert.DeserializeObject(baseFile);
+            JToken headers = null;
+            JToken rows = null;
+            var name = JTokenExtension.GetMemberName(() => headers);
+            headers = JTokenExtension.GetType(file, name);
+            name = JTokenExtension.GetMemberName(() => rows);
+            rows = JTokenExtension.GetType(file, name);
+            return new JToken [] { headers, rows };
+        }
+
+        private string CheckFileType()
         {
             Regex reg = new Regex(@"([^\.]+$)");
             Match match = reg.Match(fileName);
@@ -45,7 +62,9 @@ namespace ParsingExcelData.Models
             {
                 BaseFile = new CSV();
             }
-            dynamic results = new FinancialItem().ConvertToJson(BaseFile);
+            var results = FormatFile(JsonConvert.SerializeObject(BaseFile));
+            data = new FinancialItem().ParseData(results);
+            return data;
         }
 
         private string SetFilePath()
