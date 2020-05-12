@@ -7,16 +7,16 @@ export class Home extends Component {
         this.throwError = this.throwError.bind(this);
     }
 
-    submitFile = (e, file) => {
+    submitFile = async(e, file) => {
         e.preventDefault();
         let thisFile = file[0];
-        let form = document.getElementById("form")
+        let form = document.getElementById("form");
         const formData = new FormData(form);
         formData.append("file", thisFile.name);
-        fetch('api/results', {
+        const results = await fetch('api/results', {
             method: 'POST',
             body: formData
-        }).then(resp => resp.json()) // will need to check this later
+        }).then((response) => response.json())
     }
 
     throwError = () => {
