@@ -42,18 +42,20 @@ namespace ParsingExcelData
             List<FinancialItem> items = new List<FinancialItem>();
             int interate = 0;
 
-            foreach (var item in arr[1])
+            foreach (var thisArr in arr[1])
             {
-                this.Name = arr[1][interate][0].ToString();
-                this.Type = arr[1][interate][1].ToString();
-                this.Range = arr[1][interate][2].ToString();
-                this.Priority = arr[1][interate][3].ToString();
-                this.Amount = arr[1][interate][4].ToString();
-                this.AmountOwed = arr[1][interate][5].ToString();
-                this.TimeSpan = arr[1][interate][6].ToString();
-                items.Add(this);
-                interate++;
+                FinancialItem item = new FinancialItem();
+                item.Name = arr[1][interate][0].ToString();
+                item.Type = arr[1][interate][1].ToString();
+                item.Range = arr[1][interate][2].ToString();
+                item.Priority = arr[1][interate][3].ToString();
+                item.Amount = arr[1][interate][4].ToString();
+                item.AmountOwed = arr[1][interate][5].ToString();
+                item.TimeSpan = arr[1][interate][6].ToString();
+                items.Add(item);
+                interate++;            
             }
+
             return items;
         }
 
@@ -85,24 +87,7 @@ namespace ParsingExcelData
             {
                 var result = JsonConvert.SerializeObject(data);
                 var jobj = (JObject)JsonConvert.DeserializeObject(result);
-                // Get header
-                // Check if header is similar to json property
-                // Find body object
-                // Find t
-                
-                //var headers = JTokenExtension.GetValue(jobj);
                 var worksheet = jobj["Worksheets"];
-                //bool isValid = JTokenExtension.CheckIfValid(worksheet, this);
-                //if (isValid)
-                //{
-                //    dynamic items = new List<FinancialItem>();
-                //    items = JTokenExtension.Collection;
-                //    items = JTokenExtension.GetDataList(jobj);
-                //}
-                //else
-                //{
-                //    throw new Exception("Correct Headers aren't located in document");
-                //}
                 return result.ToString();
             } catch(Exception ex)
             {
