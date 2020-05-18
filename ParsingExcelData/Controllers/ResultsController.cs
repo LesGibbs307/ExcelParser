@@ -8,7 +8,7 @@ namespace ParsingExcelData.Controllers
 {
     
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class ResultsController : Controller
     {
         [HttpPost]
@@ -16,10 +16,10 @@ namespace ParsingExcelData.Controllers
         {
             try {
                 NewFile newFile = new NewFile(file);
-                Results results = new Results();
-                results.Data = newFile.data;
-                return Json(results);
-                //return View(Json(newFile.data), results);
+                //Results results = new Results();
+                //results.Data = newFile.data;
+                return Json(newFile.data);
+
             }catch(Exception ex)
             {
                 Console.WriteLine(ex);

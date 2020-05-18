@@ -13,10 +13,11 @@ export class Home extends Component {
         let form = document.getElementById("form");
         const formData = new FormData(form);
         formData.append("file", thisFile.name);
-        const results = await fetch('api/results', {
+        const results = await fetch('results', {
             method: 'POST',
             body: formData
-        }).then((response) => response.json())
+        }).then((response) => response.json());
+        console.log(results);
     }
 
     throwError = () => {
