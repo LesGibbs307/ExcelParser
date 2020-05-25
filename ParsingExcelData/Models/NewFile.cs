@@ -54,7 +54,7 @@ namespace ParsingExcelData.Models
         {
             Regex reg = new Regex(@"([^\.]+$)");
             Match match = reg.Match(fileName);
-            if (match.ToString() == "xlsx")
+            if (match.ToString() == "xlsx")//john needs change this to support xls and xlsx
             {
                 BaseFile = new Excel(fileName, filePath);
 

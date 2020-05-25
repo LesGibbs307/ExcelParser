@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
+import { ResultContainer } from './Result/ResultContainer';
 
 export class Home extends Component {
     constructor(props) {
         super(props);
         this.submitFile = this.submitFile.bind(this);
         this.throwError = this.throwError.bind(this);
+        this.state = {
+            data: []
+        };
     }
 
     submitFile = async(e, file) => {
@@ -17,8 +21,28 @@ export class Home extends Component {
             method: 'POST',
             body: formData
         }).then((response) => response.json());
-        console.log(results);
+
+        if (results == null) {
+            this.throwError();
+            return null;
+        } else {
+            let json = JSON.parse(results);
+            this.setState({
+                data: json
+            });
+        }
     }
+
+    componentWillUnmount() {
+        debugger;
+        console.log("will unmount");
+    }
+
+    componentDidUpdate() {
+        debugger;
+        console.log("did update");
+    }
+
 
     throwError = () => {
         //this.
@@ -52,14 +76,18 @@ export class Home extends Component {
     }
         
   render () {
-    return (
-      <div>
+      return (
+          <div className="Home">
             <h1>Upload Your Excel file below</h1>
             <form id="form" enctype="multipart/form-data" method="post" asp-action="Post" asp-controller="ResultsController" action="/results" onSubmit={(e) => this.isFormValid(e)}>
                 <input asp-for="FileUpload.FormFile" type="file" name="file" className="col-xs-12" />
                 <button type="submit">Submit</button>
-            </form>
-      </div>
+              </form>
+              <ResultContainer data={this.state.data} />
+        </div>
     );
   }
 }
+
+
+export default Home;

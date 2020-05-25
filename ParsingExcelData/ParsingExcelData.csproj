@@ -23,6 +23,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\components\Counter.js" />
+    <None Remove="ClientApp\src\components\Layout.js" />
+    <None Remove="ClientApp\src\components\NavMenu.css" />
+    <None Remove="ClientApp\src\components\NavMenu.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ExcelParserProject\ExcelParserProject.csproj" />
   </ItemGroup>
 
