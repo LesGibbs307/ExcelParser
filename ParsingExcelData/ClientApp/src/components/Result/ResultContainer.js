@@ -22,7 +22,7 @@ export class ResultContainer extends Component {
                 debitArr.push(propsData[i]);
             }
         }
-        return (obj.isPositive) ? creditArr : debitArr;
+        return (obj.isIncome) ? creditArr : debitArr;
     }
 
     calculateData = (obj, props) => {
@@ -32,9 +32,7 @@ export class ResultContainer extends Component {
         for (let i = 0; propsData.length > i; i++) {
             let amount = parseFloat(propsData[i].Amount); // backend needs to take care of this
             propsData[i].Amount = amount;
-            if (amount === NaN) {
-                amount = 0;
-            }
+            if (isNaN(amount)) { amount = 0; }
             if (propsData[i].Type === "Income") {
                 creditCount = creditCount + amount;
             } else {
