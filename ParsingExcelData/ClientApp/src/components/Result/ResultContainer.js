@@ -6,6 +6,9 @@ export class ResultContainer extends Component {
         super(props);
         this.calculateData = this.calculateData.bind(this);
         this.storeObjects = this.storeObjects.bind(this);
+        this.setData = this.setData.bind(this);
+        this.credit = { isIncome: true, collection: [], count: 0 };
+        this.debit = { isIncome: false, collection: [], count: 0 };
     }
 
     storeObjects = (obj, props) => {
@@ -42,20 +45,22 @@ export class ResultContainer extends Component {
         return (obj.isIncome) ? creditCount : debitCount;
     }
 
+    setData = (finance, props) => {
+        finance.collection = this.storeObjects(finance, props);
+        finance.count = this.calculateData(finance, props);
+        return finance;
+    }
+
     componentWillReceiveProps(props) { // this may be depreciated
         this.setState({ data: props.data });
-        let credit = { isIncome: true, collection:[], count:0 };
-        let debit = { isIncome: false, collection:[], count:0 };
-        credit.collection = this.storeObjects(credit, props);
-        debit.collection = this.storeObjects(debit, props);
-        credit.count = this.calculateData(credit, props);
-        debit.count = this.calculateData(debit, props);
+        this.credit = this.setData(this.credit, props);
+        this.debit = this.setData(this.debit, props);
     }
 
     render() {
         return (
             <section data={this.props.data} className="ResultContainer col-xs-12">
-                <ResultHeader />
+                <ResultHeader credit={this.credit} debit={this.debit} />
             </section>
         );
     }
