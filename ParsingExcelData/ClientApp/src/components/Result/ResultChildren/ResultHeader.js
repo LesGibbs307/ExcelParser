@@ -3,32 +3,70 @@
 export class ResultHeader extends Component {
     constructor(props) {
         super(props);
+        this.largestCredit = { name: null, value: null};
+        this.largestDebit = { name: null, value: null };;
+        this.findLargestValue = this.findLargestValue.bind(this);
+        this.incrementValues = this.incrementValues.bind(this);;
+    }
+
+    incrementValues = (value, name, collection) => {
+        for (let i = 0; collection.length > i; i++) {
+            if (name == collection[i].Name) {
+                value = value + collection[i].Amount;
+            }
+        }
+        return value.toFixed(2);
+    }
+
+    findLargestValue = (prop) => {
+        let lastValue = 0;
+        let finalValue = 0;
+        let obj = { name: null, value: null };
+
+        for (let i = 0; prop.length > i; i++) {
+            let value = prop[i].Amount;
+            if (lastValue == 0 || value > lastValue) {
+                lastValue = value;
+                obj.name = prop[i].Name;;
+                obj.value = value;
+            }        
+        }
+        finalValue = this.incrementValues(finalValue, obj.name, prop);
+
+        return {
+            name: obj.name,
+            value: finalValue
+        };
     }
 
     componentWillReceiveProps(props) { // this may be depreciated
         this.setState({ data: props.data });
-        debugger;
-     //   credit = this.setData(credit, props);
-       // debit = this.setData(data, props);
+        this.largestCredit = this.findLargestValue(props.credit.collection);
+        this.largestDebit = this.findLargestValue(props.debit.collection);
     }
 
     render() {
         return (
-            <div className="">
-                <div className="col-6 left">
-                    <div className="col-12 top">
-                        <p>Amount spent this year</p>
-                        <h2>{this.props.debit.count}</h2>
+            <div className="ResultHeader col-12">
+                <div className="row">
+                    <div className="col-6 left">
+                        <div className="row">
+                            <div className="col top">
+                                <p>Amount spent this year</p>
+                                <h2>{this.props.debit.count}</h2>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col bottom">
+                                <p>Amount made this year</p>
+                                <h3>{this.props.credit.count}</h3>
+                            </div>                    
+                        </div>
                     </div>
-                    <div className="col-12 bottom">
-                        <p>Amount made this year</p>
-                        <h2>{this.props.credit.count}</h2>
-                    </div>                    
-                </div>
-                <div className="col-6 right">
-                    <p>"" is the biggest issue with "" in spending</p>
-
-                    <p>"" is the reason you made ""</p>
+                    <div className="col-6 right">                    
+                        <p><i>{this.largestDebit.name}</i> is the biggest issue with <span className="debit"><i>{this.largestDebit.value}</i></span> in spending</p>
+                        <p><i>{this.largestCredit.name}</i> is the reason you made <span className="credit"><i>{this.largestCredit.value}</i></span></p>
+                    </div>
                 </div>
             </div>
         );

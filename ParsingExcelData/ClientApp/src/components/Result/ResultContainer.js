@@ -42,7 +42,7 @@ export class ResultContainer extends Component {
                 debitCount = debitCount + amount;
             }
         }
-        return (obj.isIncome) ? creditCount : debitCount;
+        return (obj.isIncome) ? creditCount.toFixed(2) : debitCount.toFixed(2);
     }
 
     setData = (finance, props) => {
@@ -59,7 +59,7 @@ export class ResultContainer extends Component {
 
     render() {
         return (
-            <section data={this.props.data} className="ResultContainer col-xs-12">
+            <section data={this.props.data} className="container ResultContainer col-xs-12">
                 <ResultHeader credit={this.credit} debit={this.debit} />
             </section>
         );
