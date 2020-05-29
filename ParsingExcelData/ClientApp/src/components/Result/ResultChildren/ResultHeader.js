@@ -59,7 +59,7 @@ export class ResultHeader extends Component {
                         <div className="row">
                             <div className="col bottom">
                                 <p>Amount made this year</p>
-                                <h3>{this.props.credit.count}</h3>
+                                <h4>{this.props.credit.count}</h4>
                             </div>                    
                         </div>
                     </div>

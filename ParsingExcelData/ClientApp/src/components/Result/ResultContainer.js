@@ -1,5 +1,6 @@
 ﻿import React, { Component } from 'react';
 import ResultHeader from './ResultChildren/ResultHeader';
+import ResultBody from './ResultChildren/ResultBody';
 
 export class ResultContainer extends Component {
     constructor(props) {
@@ -59,8 +60,9 @@ export class ResultContainer extends Component {
 
     render() {
         return (
-            <section data={this.props.data} className="container ResultContainer col-xs-12">
-                <ResultHeader credit={this.credit} debit={this.debit} />
+            <section data={this.props.data} className="container ResultContainer">
+                <ResultHeader credit={this.credit} debit={this.debit} />   
+                <ResultBody credit={this.credit} debit={this.debit} />
             </section>
         );
     }

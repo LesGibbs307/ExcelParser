@@ -12,3 +12,49 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+
+.col-centered {
+    float:none;
+    margin: 0 auto;
+}
+.ResultContainer {
+    height: auto;
+}
+
+.ResultHeader {
+    color: #fff;
+}
+
+p {
+    margin-bottom: 0 !important;
+}
+
+.ResultHeader .left {
+    padding: 10px 0px 10px 1em;
+}
+
+.ResultHeader .right p {
+    padding-top: 6%;
+    text-align: right;
+}
+
+.debit {
+    color: red;
+}
+
+.credit {
+    color: green;
+}
+
+.remove-padding {
+    padding: 0;
+}
+
+.ResultHeader {
+    background-color: lightblue;
+}
+
+.months-list {
+    margin-top: 20px;
+    text-align: center;
+}
