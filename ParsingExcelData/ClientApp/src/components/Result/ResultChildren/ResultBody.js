@@ -4,9 +4,13 @@ export class ResultBody extends Component {
     constructor(props) {
         super(props);
         this.months = [];
+        this.methodname = null;
         this.getAllMonths = this.getAllMonths.bind(this);
         this.checkValueExist = this.checkValueExist.bind(this);
-
+        this.setChartParameters = this.setChartParameters.bind(this);
+        this.getAmountOwed = this.getAmountOwed.bind(this);
+        this.getBillTypes = this.getBillTypes.bind(this);
+        this.checkElementsHasClassName = this.checkElementsHasClassName.bind(this);
     }
 
     checkValueExist = (value, collection) => {
@@ -17,6 +21,41 @@ export class ResultBody extends Component {
             }
         }
         return doesExist;
+    }
+
+    getAmountOwed = (e) => {
+        debugger;
+        console.log(e);
+    }
+
+    getBillTypes = (e) => {
+        debugger;
+        console.log(e);
+    }
+
+    checkElementsHasClassName = (parentNode, stringValue) => {
+        for (let i = 0; parentNode.childNodes.length > i; i++) {
+            if (parentNode.childNodes[i].className == stringValue) {
+                parentNode.childNodes[i].classList.remove(stringValue);
+                return;
+            }
+        }
+    }
+
+    setChartParameters = (e) => {
+        debugger;
+        let thisBtn = e.target;
+        let getAttr = thisBtn.getAttribute("methodname");
+        let parent = thisBtn.closest(".parent");
+        let selected = document.getElementsByClassName("selected");
+
+        if (getAttr != null) { this.methodname = getAttr; }
+        if (!parent.classList.contains("parent")) { return; }        
+        if (parent.hasChildNodes()) { this.checkElementsHasClassName(parent, "selected"); }
+        thisBtn.className += "selected";
+        if (selected.length > 1) {
+            // if do call method name
+        }
     }
 
     getAllMonths = (collection, arr) => {
@@ -43,18 +82,29 @@ export class ResultBody extends Component {
     render() {
         const months = this.months;
         return (            
-            <section className="ResultBody col-12">
+            <section className="ResultBody col-12 remove-padding">
                 <div className="row">
                     <div className="col-centered col-8 months-list">
                         <div className="col-12">
-                            <div class="row col-centered">
-                                {months.map((item, i) => <div className="col-3"><button key={i}>{item}</button></div>)}
+                            <div className="row col-centered parent">
+                                {months.map((item) => <div className="col-3 btn-container"><button onClick={this.setChartParameters} key={item}>{item}</button></div>)}
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="data-section col-12">
-                    <div className="col-1 tab-btn">
+                <div className="data-section col-12 remove-padding">
+                    <div className="col-1 tab-btn remove-padding">
+                        <div className="col-12 parent">
+                            <div className="row btn-container">
+                                <button methodname="" onClick={this.setChartParameters}>Debit <br /> vs Credit</button>
+                            </div>
+                            <div className="row tab-btn-container">
+                                <button methodname="getAmountOwed" onClick={this.setChartParameters}>Amount <br/> Owed</button>
+                            </div>
+                            <div className="row tab-btn-container">
+                                <button methodname="getBillTypes" onClick={this.setChartParameters}>Bill Types</button>
+                            </div>
+                        </div>
                     </div>
                     <div className="col-11 bar-visual">
                     </div>
@@ -62,7 +112,6 @@ export class ResultBody extends Component {
             </section>
         );
     }
-
 }
 
 export default ResultBody

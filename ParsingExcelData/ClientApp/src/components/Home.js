@@ -46,7 +46,7 @@ export class Home extends Component {
 
     throwError = () => {
         //this.
-        console.log("test");
+        alert("File did not upload successfully, try again");
     }
 
     isFormValid = (e) => {

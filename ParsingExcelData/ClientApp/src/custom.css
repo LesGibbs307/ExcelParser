@@ -58,3 +58,18 @@ p {
     margin-top: 20px;
     text-align: center;
 }
+.tab-btn-container {
+    margin-bottom: 45%;
+}
+
+.tab-btn {
+    margin-top: 7%;
+}
+
+.months-list .selected {
+    background: darkgray;
+}
+
+.tab-btn .selected {
+    background: lightblue;
+}
