@@ -11,6 +11,7 @@ export class ResultBody extends Component {
         this.getAmountOwed = this.getAmountOwed.bind(this);
         this.getBillTypes = this.getBillTypes.bind(this);
         this.checkElementsHasClassName = this.checkElementsHasClassName.bind(this);
+        this.getSelectedMonth = this.getSelectedMonth.bind(this);
     }
 
     checkValueExist = (value, collection) => {
@@ -23,23 +24,34 @@ export class ResultBody extends Component {
         return doesExist;
     }
 
-    getAmountOwed = (e) => {
+    getAmountOwed = (props) => {
         debugger;
-        console.log(e);
+        console.log(props);
     }
 
-    getBillTypes = (e) => {
+    getBillTypes = (props) => {
         debugger;
-        console.log(e);
+        console.log(props);
     }
 
     checkElementsHasClassName = (parentNode, stringValue) => {
-        for (let i = 0; parentNode.childNodes.length > i; i++) {
+        for (let i = 0; parentNode.childNodes.length > i; i++) {b
             if (parentNode.childNodes[i].className == stringValue) {
                 parentNode.childNodes[i].classList.remove(stringValue);
                 return;
             }
         }
+    }
+
+    getSelectedMonth = (arr) => {
+        for (let i = 0; arr.length > i; i++) {
+            let child = arr[i];
+            let parent = child.closest(".parent");
+            if (parent.getElementsByClassName("btn-container")) {
+                return child.innerHTML;
+            }
+        }
+        return null;
     }
 
     setChartParameters = (e) => {
@@ -53,8 +65,10 @@ export class ResultBody extends Component {
         if (!parent.classList.contains("parent")) { return; }        
         if (parent.hasChildNodes()) { this.checkElementsHasClassName(parent, "selected"); }
         thisBtn.className += "selected";
-        if (selected.length > 1) {
-            // if do call method name
+        let thisMonth = this.getSelectedMonth(selected);
+
+        if (selected.length > 1 && thisMonth != null) {
+            eval(this.methodname)(this.props, thisMonth);
         }
     }
 
