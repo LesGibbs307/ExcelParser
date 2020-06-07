@@ -53,14 +53,17 @@ export class ResultContainer extends Component {
     }
 
     componentWillReceiveProps(props) { // this may be depreciated
+        let results = document.getElementsByClassName("ResultContainer");
+        results[0].classList.remove("hidden");
         this.setState({ data: props.data });
         this.credit = this.setData(this.credit, props);
         this.debit = this.setData(this.debit, props);
+
     }
 
     render() {
         return (
-            <section data={this.props.data} className="container ResultContainer">
+            <section data={this.props.data} className="container ResultContainer hidden">
                 <ResultHeader credit={this.credit} debit={this.debit} />   
                 <ResultBody credit={this.credit} debit={this.debit} />
             </section>

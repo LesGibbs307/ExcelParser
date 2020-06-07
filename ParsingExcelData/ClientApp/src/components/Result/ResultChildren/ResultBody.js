@@ -4,6 +4,7 @@ export class ResultBody extends Component {
     constructor(props) {
         super(props);
         this.months = [];
+        this.chartData = [];
         this.methodname = null;
         this.getAllMonths = this.getAllMonths.bind(this);
         this.checkValueExist = this.checkValueExist.bind(this);
@@ -12,6 +13,8 @@ export class ResultBody extends Component {
         this.getBillTypes = this.getBillTypes.bind(this);
         this.checkElementsHasClassName = this.checkElementsHasClassName.bind(this);
         this.getSelectedMonth = this.getSelectedMonth.bind(this);
+        this.createChart = this.createChart.bind(this);
+        this.getDebitAndCredit = this.getDebitAndCredit.bind(this);
     }
 
     checkValueExist = (value, collection) => {
@@ -24,18 +27,68 @@ export class ResultBody extends Component {
         return doesExist;
     }
 
-    getAmountOwed = (props) => {
-        debugger;
-        console.log(props);
+    createChart = (arr) => {
+        let chart = window.anychart.column();
+        chart.data(arr);
+        chart.container("bar-visual");
+        chart.draw();
     }
 
-    getBillTypes = (props) => {
-        debugger;
-        console.log(props);
+    getDebitAndCredit = (props, value) => {
+        let credit = props.credit;
+        let debit = props.debit;
+        let parentArr = [credit, debit];
+        for (let i = 0; parentArr.length > i; i++) {
+            let thisArr = parentArr[i];
+            let itemName = null;
+            let arr = [];
+            let count = 0;
+            for (let j = 0; thisArr.collection.length > j; j++) {
+                let item = thisArr.collection[j];
+                itemName = (thisArr.isIncome) ? "Credits" : "Debits";
+
+                if (item.TimeSpan === value && !isNaN(item.Amount)) {
+                    count = count + item.Amount;
+                }
+            }
+            arr.push(itemName, count);
+            this.chartData.push(arr);
+        }
+        return this.createChart(this.chartData);
+    }
+
+    getAmountOwed = (props, value) => {
+        let arr = props.debit.collection;
+        for (let i = 0; arr.length > i; i++) {
+            let item = arr[i];
+            let amount = parseFloat(item.AmountOwed);
+            let dataArr = [];
+            if (item.TimeSpan === value && !isNaN(amount)) {
+                dataArr.push(item.Name);
+                dataArr.push(amount);
+                this.chartData.push(dataArr);
+            }
+        }
+        return this.createChart(this.chartData);
+    }
+
+    getBillTypes = (props, value) => {
+        let arr = props.debit.collection;
+        for (let i = 0; arr.length > i; i++) {
+            let item = arr[i];
+            let amount = item.AmountOwed;
+            let dataArr = [];
+            if (item.TimeSpan === value) {
+                dataArr.push(item.Type);
+                dataArr.push(amount);
+                this.chartData.push(dataArr);
+            }
+        }
+        return this.createChart(this.chartData);
     }
 
     checkElementsHasClassName = (parentNode, stringValue) => {
-        for (let i = 0; parentNode.childNodes.length > i; i++) {b
+        for (let i = 0; parentNode.childNodes.length > i; i++) {
             if (parentNode.childNodes[i].className == stringValue) {
                 parentNode.childNodes[i].classList.remove(stringValue);
                 return;
@@ -68,7 +121,7 @@ export class ResultBody extends Component {
         let thisMonth = this.getSelectedMonth(selected);
 
         if (selected.length > 1 && thisMonth != null) {
-            eval(this.methodname)(this.props, thisMonth);
+            eval("this." + this.methodname)(this.props, thisMonth);
         }
     }
 
@@ -107,20 +160,21 @@ export class ResultBody extends Component {
                     </div>
                 </div>
                 <div className="data-section col-12 remove-padding">
-                    <div className="col-1 tab-btn remove-padding">
-                        <div className="col-12 parent">
-                            <div className="row btn-container">
-                                <button methodname="" onClick={this.setChartParameters}>Debit <br /> vs Credit</button>
-                            </div>
-                            <div className="row tab-btn-container">
-                                <button methodname="getAmountOwed" onClick={this.setChartParameters}>Amount <br/> Owed</button>
-                            </div>
-                            <div className="row tab-btn-container">
-                                <button methodname="getBillTypes" onClick={this.setChartParameters}>Bill Types</button>
+                    <div className="row">
+                        <div className="col-1 tab-btn remove-padding">
+                            <div className="col-12 parent">
+                                <div className="row tab-btn-container">
+                                    <button methodname="getDebitAndCredit" onClick={this.setChartParameters}>Debit <br /> vs Credit</button>
+                                </div>
+                                <div className="row tab-btn-container">
+                                    <button methodname="getAmountOwed" onClick={this.setChartParameters}>Amount <br/> Owed</button>
+                                </div>
+                                <div className="row tab-btn-container">
+                                    <button methodname="getBillTypes" onClick={this.setChartParameters}>Bill Types</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="col-11 bar-visual">
+                        <div id="bar-visual" className="col-11"></div>
                     </div>
                 </div>
             </section>

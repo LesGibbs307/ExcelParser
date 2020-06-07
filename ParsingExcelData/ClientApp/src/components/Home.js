@@ -15,6 +15,7 @@ export class Home extends Component {
         e.preventDefault();
         let thisFile = file[0];
         let form = document.getElementById("form");
+        let home = document.getElementsByClassName("home-container");
         const formData = new FormData(form);
         formData.append("file", thisFile.name);
         const results = await fetch('results', {
@@ -30,16 +31,17 @@ export class Home extends Component {
             this.setState({
                 data: json
             });
+            home[0].classList.add("hidden");
         }
     }
 
     componentWillUnmount() {
-        debugger;
+      //  debugger;
         console.log("will unmount");
     }
 
     componentDidUpdate() {
-        debugger;
+       // debugger;
         console.log("did update");
     }
 
@@ -77,13 +79,15 @@ export class Home extends Component {
         
   render () {
       return (
-          <div className="Home">
+        <div className="Home">
+          <div className="home-container col-6 col-centered">
             <h1>Upload Your Excel file below</h1>
             <form id="form" enctype="multipart/form-data" method="post" asp-action="Post" asp-controller="ResultsController" action="/results" onSubmit={(e) => this.isFormValid(e)}>
                 <input asp-for="FileUpload.FormFile" type="file" name="file" className="col-xs-12" />
                 <button type="submit">Submit</button>
-              </form>
-              <ResultContainer data={this.state.data} />
+            </form>
+          </div>
+          <ResultContainer data={this.state.data} />
         </div>
     );
   }

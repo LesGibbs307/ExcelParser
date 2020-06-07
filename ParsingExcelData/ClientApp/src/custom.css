@@ -51,7 +51,8 @@ p {
 }
 
 .ResultHeader {
-    background-color: lightblue;
+    background-color: #9ACEFA;
+    color: #000;
 }
 
 .months-list {
@@ -71,5 +72,74 @@ p {
 }
 
 .tab-btn .selected {
-    background: lightblue;
+    background: #9ACEFA;
+}
+
+.anychart-credits {
+    display: none;
+}
+
+.anychart-credits-text {
+    display: none;
+}
+
+.hidden {
+    display: none;
+}
+
+.home-container {
+    text-align: center;
+    margin-top: 10%;
+    -webkit-animation: pusate 1s infinite alternate;
+    -moz-animation: pusate 1s infinite alternate;
+    animation: pusate 1s infinite alternate;
+    text-shadow: 0 0 8px #ccc;
+    padding: 30px;
+}
+
+.btn-danger {
+    border: 0;
+}
+
+.btn-container button {
+    border-radius: 5px;
+    padding: 10px 5px;
+}
+
+.tab-btn-container button {
+    background-color: darkblue;
+    color: #fff;
+    border: 0;
+    padding: 20px 10px;
+    width: 100%;
+}
+
+@-webkit-keyframes pusate {
+    from {
+        box-shadow: 0 0 5px #9ACEFA;
+    }
+
+    to {
+        box-shadow: 0 0 10px darkblue;
+    }
+}
+
+@-moz-keyframes pusate {
+    from {
+        box-shadow: 0 0 5px #9ACEFA;
+    }
+
+    to {
+        box-shadow: 0 0 10px darkblue;
+    }
+}
+
+@keyframes pusate {
+    from {
+        box-shadow: 0 0 5px #9ACEFA;
+    }
+
+    to {
+        box-shadow: 0 0 10px darkblue;
+    }
 }
