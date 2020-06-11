@@ -7,6 +7,10 @@ code {
   color: #E01A76;
 }
 
+h2 {
+    text-align: center;
+}
+
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;
@@ -17,6 +21,13 @@ code {
     float:none;
     margin: 0 auto;
 }
+
+header {
+    position: fixed;
+    z-index: 9;
+    background: #ccc;
+}
+
 .ResultContainer {
     height: auto;
 }
@@ -89,9 +100,7 @@ p {
 
 .home-container {
     text-align: center;
-    margin-top: 10%;
-    -webkit-animation: pusate 1s infinite alternate;
-    -moz-animation: pusate 1s infinite alternate;
+    margin-top: 1%;
     animation: pusate 1s infinite alternate;
     text-shadow: 0 0 8px #ccc;
     padding: 30px;
@@ -113,6 +122,26 @@ p {
     padding: 20px 10px;
     width: 100%;
 }
+
+.file-example iframe {
+    height: 100%;
+    min-height: 230px;
+}
+
+
+.Home p {
+    text-align: center;
+}
+
+.Home .top-section {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.file-example p {
+    margin-top: 3%;
+}
+
 
 @-webkit-keyframes pusate {
     from {
