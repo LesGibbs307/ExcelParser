@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace ExcelParserProject
+namespace ExcelParserProject.Domain
 {
     public static class JTokenExtension
     {
@@ -73,6 +73,15 @@ namespace ExcelParserProject
                         break;
                     }
             }
+        }
+
+        public static decimal ToDecimal(JToken value)
+        {
+            decimal number;
+
+            Decimal.TryParse(value.ToString(), out number);
+
+            return number;
         }
     }
 }

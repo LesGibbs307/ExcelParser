@@ -7,20 +7,27 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Collections;
 using Microsoft.CSharp.RuntimeBinder;
+using System.Threading.Tasks;
 
-namespace ExcelParserProject
+namespace ExcelParserProject.Domain
 {
-    public class Excel: BaseFile
+    public class Excel : BaseFile
     {
-        private Worksheet worksheet = new Worksheet();
+        public string FileName { get; set; }
+        public string FilePath { get; set; }
+        public List<Worksheet> Worksheets = new List<Worksheet>();
+
         public Excel(string fileName, string filePath)
         {
             FileName = fileName;
             FilePath = filePath;
-            ReadFile(FileName, FilePath);
+            ReadFile(FilePath, new Worksheet());
         }
 
-        private void CreateWorkSheet(dynamic table, dynamic row)
+
+
+
+        private async Task CreateWorkSheet(dynamic table, dynamic row, Worksheet worksheet)
         {
             var thisRow = row.ItemArray;
             try 
@@ -41,7 +48,7 @@ namespace ExcelParserProject
             }
         }
 
-        private void IterateWorkBook(dynamic values)
+        private async Task IterateWorkBook(dynamic values, Worksheet worksheet)
         {
             try
             {                
@@ -56,46 +63,39 @@ namespace ExcelParserProject
                             {                                
                                 if(column.Ordinal == rowLength)
                                 {
-                                    CreateWorkSheet(table, row);
+                                    await CreateWorkSheet(table, row, worksheet);
                                 }
                             }
                         }
                     }
                     Worksheets.Add(worksheet);
                 }
-                
             } catch(Exception ex)
             {
                 Console.WriteLine(ex);
             }
         }
 
-        private void ReadFile(string fileName, string filePath)
+        private async void ReadFile(string filePath, Worksheet worksheet)
         {
             try 
             { 
                 Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
                 using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
                 {
-                    // Auto-detect format, supports:
-                    //  - Binary Excel files (2.0-2003 format; *.xls)
-                    //  - OpenXml Excel files (2007 format; *.xlsx)
                     using (var reader = ExcelReaderFactory.CreateReader(stream))
                     {
-                        // Choose one of either 1 or 2:
-
-                        // 1. Use the reader methods
                         do
                         {
                             while (reader.Read())
                             {      
                             }
                         } while (reader.NextResult());
-                        var conf = new ExcelReaderConfiguration { Password = "JohnGibson" };
+                        var conf = new ExcelReaderConfiguration { Password = "Test" };
                         var excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream, conf);
                         var result = reader.AsDataSet();
                         var workbook = result.Tables;
-                        IterateWorkBook(workbook);
+                        await IterateWorkBook(workbook, worksheet);
                     }
                 }
             } catch(Exception ex)

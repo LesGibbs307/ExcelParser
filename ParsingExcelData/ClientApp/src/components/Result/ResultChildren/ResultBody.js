@@ -47,7 +47,7 @@ export class ResultBody extends Component {
                 let item = thisArr.collection[j];
                 itemName = (thisArr.isIncome) ? "Credits" : "Debits";
 
-                if (item.TimeSpan === value && !isNaN(item.Amount)) {
+                if (item.TimeSpan === value) {
                     count = count + item.Amount;
                 }
             }
@@ -61,9 +61,9 @@ export class ResultBody extends Component {
         let arr = props.debit.collection;
         for (let i = 0; arr.length > i; i++) {
             let item = arr[i];
-            let amount = parseFloat(item.AmountOwed);
+            let amount = item.AmountOwed;
             let dataArr = [];
-            if (item.TimeSpan === value && !isNaN(amount)) {
+            if (item.TimeSpan === value) {
                 dataArr.push(item.Name);
                 dataArr.push(amount);
                 this.chartData.push(dataArr);
@@ -108,7 +108,6 @@ export class ResultBody extends Component {
     }
 
     setChartParameters = (e) => {
-        debugger;
         let thisBtn = e.target;
         let getAttr = thisBtn.getAttribute("methodname");
         let parent = thisBtn.closest(".parent");

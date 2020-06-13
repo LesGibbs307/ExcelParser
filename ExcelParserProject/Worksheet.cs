@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ExcelParserProject
+namespace ExcelParserProject.Domain
 {
     public class Worksheet
     {

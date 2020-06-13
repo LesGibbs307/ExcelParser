@@ -52,14 +52,14 @@ export class ResultHeader extends Component {
                     <div className="col-6 left">
                         <div className="row">
                             <div className="col top">
-                                <p>Amount spent this year</p>
-                                <h2>{this.props.debit.count}</h2>
+                                <p className="align-left">Amount spent this year</p>
+                                <h2 className="align-left">{this.props.debit.count}</h2>
                             </div>
                         </div>
                         <div className="row">
                             <div className="col bottom">
-                                <p>Amount made this year</p>
-                                <h4>{this.props.credit.count}</h4>
+                                <p className="align-left">Amount made this year</p>
+                                <h4 className="align-left">{this.props.credit.count}</h4>
                             </div>                    
                         </div>
                     </div>

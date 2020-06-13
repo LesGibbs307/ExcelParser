@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ExcelParserProject
+namespace ExcelParserProject.Domain
 {
-    public class CSV : BaseFile //, IParseable
-    {        
-        public void ReadFile()
-        {
-           // throw new NotImplementedException();
-        }
+    public class CSV : BaseFile
+    {
+        public string FileName { get; set; }
+        public string FilePath { get; set; }
+        public List<Worksheet> Worksheets { get; set; }
 
-
-        public void ToParseData()
+        public CSV(string fileName, string filePath)
         {
-            throw new NotImplementedException();
+            FileName = fileName;
+            FilePath = filePath;
+
         }
     }
 }

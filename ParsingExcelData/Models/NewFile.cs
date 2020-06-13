@@ -2,37 +2,26 @@
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
-using ExcelParserProject;
+using ExcelParserProject.Domain;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace ParsingExcelData.Models
 {
     public class NewFile
     {
-        public string fileName;
-        public string filePath;
-        public string data;
-        public static IFormFile File { get; set; }
+        public KeyValuePair<bool, string> ResultData { get; set; } // this data needs to be a part of Financial
+        public static IFormFile FileInfo { get; set; }
         public BaseFile BaseFile { get; set; }
-
-
-        public string FileName
-        {
-            get { return fileName; }
-            set { fileName = value; }
-        }
-
-        public string FilePath
-        {
-            get { return filePath; }
-            set { filePath = value; }
-        }
+        public string FileName { get; set; }
+        public string FilePath { get; set; }
 
         public NewFile(IFormFile file)
         {
-            File = file;
-            FileName = Path.GetFileName(File.FileName);
+            FileInfo = file;
+            FileName = Path.GetFileName(FileInfo.FileName);
             FilePath = SetFilePath();
             CreateFileInDirectory();
             CheckFileType();
@@ -50,34 +39,31 @@ namespace ParsingExcelData.Models
             return new JToken [] { headers, rows };
         }
 
-        private string CheckFileType()
+        private KeyValuePair<bool, string> CheckFileType()
         {
             Regex reg = new Regex(@"([^\.]+$)");
-            Match match = reg.Match(fileName);
-            if (match.ToString() == "xlsx")//john needs change this to support xls and xlsx
-            {
-                BaseFile = new Excel(fileName, filePath);
-
-            } else
-            {
-                BaseFile = new CSV();
-            }
+            Match match = reg.Match(FileName);
+            BaseFile = match.ToString().Contains("xls") ? BaseFile = new Excel(FileName, FilePath)
+                                                        : BaseFile = new CSV(FileName, FilePath);
             var results = FormatFile(JsonConvert.SerializeObject(BaseFile));
-            data = new FinancialItem().ParseData(results);
-            return data;
+            ResultData = new FinancialItem().ParseData(results);
+            File.Delete(FilePath);
+            // send file to cosmos db
+            // delete temporary file here
+            return ResultData;
         }
 
         private string SetFilePath()
         {            
-            return Path.Combine(Directory.GetCurrentDirectory(), @"www", fileName);
+            return Path.Combine(Directory.GetCurrentDirectory(), @"www", FileName);
         }
         private async void CreateFileInDirectory()
         {
             try
             {
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                using (var fileStream = new FileStream(FilePath, FileMode.Create))
                 {
-                    await File.CopyToAsync(fileStream);
+                    await FileInfo.CopyToAsync(fileStream);
                 }
             }
             catch (Exception ex)

@@ -1,4 +1,4 @@
-﻿using ExcelParserProject;
+﻿using ExcelParserProject.Domain;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -24,10 +24,10 @@ namespace ParsingExcelData
         public string Priority { get; set; }
 
         [JsonProperty("Amount")]
-        public string Amount { get; set; }
+        public decimal Amount { get; set; }
 
         [JsonProperty("AmountOwed")]
-        public string AmountOwed { get; set; }
+        public decimal AmountOwed { get; set; }
 
         [JsonProperty("TimeSpan")]
         public string TimeSpan { get; set; }
@@ -40,46 +40,45 @@ namespace ParsingExcelData
         public List<FinancialItem> IterateData(JToken[] arr)
         {
             List<FinancialItem> items = new List<FinancialItem>();
-            int interate = 0;
+            int iterate = 0;
+            var rows = arr[1];
 
-            foreach (var thisArr in arr[1])
+            foreach (var row in rows)
             {
                 FinancialItem item = new FinancialItem();
-                item.Name = arr[1][interate][0].ToString();
-                item.Type = arr[1][interate][1].ToString();
-                item.Range = arr[1][interate][2].ToString();
-                item.Priority = arr[1][interate][3].ToString();
-                item.Amount = arr[1][interate][4].ToString();
-                item.AmountOwed = arr[1][interate][5].ToString();
-                item.TimeSpan = arr[1][interate][6].ToString();
+                item.Name = rows[iterate][0].ToString();
+                item.Type = rows[iterate][1].ToString();
+                item.Range = rows[iterate][2].ToString();
+                item.Priority = rows[iterate][3].ToString();
+                item.Amount = JTokenExtension.ToDecimal(rows[iterate][4]);
+                item.AmountOwed = JTokenExtension.ToDecimal(rows[iterate][5]);
+                item.TimeSpan = rows[iterate][6].ToString();
                 items.Add(item);
-                interate++;            
+                iterate++;            
             }
-
             return items;
         }
 
-        public string ParseData(JToken[] arr)
+        public KeyValuePair<bool, string> ParseData(JToken[] arr)
         {
             try
             {
                 bool isValidHeader = JTokenExtension.CheckIfValid(arr[0], this);
-                if (!isValidHeader)
+                if (isValidHeader)
                 {
-                    throw new Exception();
+                    List<FinancialItem> obj = IterateData(arr);
+                    string json = JsonConvert.SerializeObject(obj);
+                    return new KeyValuePair<bool, string>(isValidHeader, json);
                 }
                 else
                 {
-                    List<FinancialItem> obj = IterateData(arr);
-                    return JsonConvert.SerializeObject(obj);
+                    throw new Exception("Header data is missing");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex);
+                return new KeyValuePair<bool, string> (false, ex.Message);
             }
-
-            return null;
         }
         public string ConvertToJson<T>(T data)
         {

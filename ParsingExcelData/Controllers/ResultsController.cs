@@ -16,10 +16,13 @@ namespace ParsingExcelData.Controllers
         {
             try {
                 NewFile newFile = new NewFile(file);
-                //Results results = new Results();
-                //results.Data = newFile.data;
-                return Json(newFile.data);
-
+                if(newFile.ResultData.Key) { 
+                    return Json(newFile.ResultData);
+                }
+                else
+                {
+                    throw new Exception();
+                }
             }catch(Exception ex)
             {
                 Console.WriteLine(ex);
