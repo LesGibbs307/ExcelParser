@@ -15,6 +15,7 @@ export class ResultBody extends Component {
         this.getSelectedMonth = this.getSelectedMonth.bind(this);
         this.createChart = this.createChart.bind(this);
         this.getDebitAndCredit = this.getDebitAndCredit.bind(this);
+        this.deleteChart = this.deleteChart.bind(this);
     }
 
     checkValueExist = (value, collection) => {
@@ -25,6 +26,13 @@ export class ResultBody extends Component {
             }
         }
         return doesExist;
+    }
+
+    deleteChart = () => {
+        this.chartData.length = 0;
+        let chart = document.getElementById("bar-visual");
+        let chartData = chart.childNodes;
+        chart.removeChild(chartData[0]);
     }
 
     createChart = (arr) => {
@@ -88,10 +96,11 @@ export class ResultBody extends Component {
     }
 
     checkElementsHasClassName = (parentNode, stringValue) => {
-        for (let i = 0; parentNode.childNodes.length > i; i++) {
-            if (parentNode.childNodes[i].className == stringValue) {
-                parentNode.childNodes[i].classList.remove(stringValue);
-                return;
+        let childBtnList = parentNode.getElementsByTagName("button");
+        for (let i = 0; childBtnList.length > i; i++) {
+            if (childBtnList[i].className.includes(stringValue)) {
+                childBtnList[i].classList.remove(stringValue);
+                this.deleteChart();
             }
         }
     }

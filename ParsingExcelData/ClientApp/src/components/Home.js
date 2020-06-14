@@ -36,16 +36,6 @@ export class Home extends Component {
         }
     }
 
-    componentWillUnmount() {
-      //  debugger;
-        console.log("will unmount");
-    }
-
-    componentDidUpdate() {
-       // debugger;
-        console.log("did update");
-    }
-
     throwServerError = (message) => {
         alert(message);
         window.location.reload();
@@ -113,6 +103,5 @@ export class Home extends Component {
     );
   }
 }
-
 
 export default Home;

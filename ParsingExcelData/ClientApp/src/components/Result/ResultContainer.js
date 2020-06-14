@@ -18,7 +18,7 @@ export class ResultContainer extends Component {
 
         let propsData = props.data;
         for (let i = 0; propsData.length > i; i++) {
-            let amount = parseFloat(propsData[i].Amount); // backend needs to take care of this
+            let amount = propsData[i].Amount;
             propsData[i].Amount = amount;
             if (propsData[i].Type === "Income") {
                 creditArr.push(propsData[i]);
@@ -34,7 +34,7 @@ export class ResultContainer extends Component {
         let debitCount = 0;
         let propsData = props.data;
         for (let i = 0; propsData.length > i; i++) {
-            let amount = parseFloat(propsData[i].Amount); // backend needs to take care of this
+            let amount = propsData[i].Amount; 
             propsData[i].Amount = amount;
             if (isNaN(amount)) { amount = 0; }
             if (propsData[i].Type === "Income") {
